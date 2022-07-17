@@ -1,0 +1,24 @@
+sudo: required
+language: generic
+services:
+  - docker
+
+before_install:
+  - docker build -t fibonacci_test -f ./client/Dockerfile.dev ./client
+
+scripts:
+  - docker run -e CI=true fibonacci_test npm test
+
+after_success:
+  - docker build -t fibonacci-client ./client
+  - docker build -t fibonacci-nginx ./nginx
+  - docker build -t fibonacci-server ./server
+  - docker build -t fibonacci-worker ./worker
+  # Log in to the docker cli/hub
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take these images and push to docker hub
+  - docker push fibonacci-client
+  - docker push fibonacci-server
+  - docker push fibonacci-nginx
+  - docker push fibonacci-worker
+
