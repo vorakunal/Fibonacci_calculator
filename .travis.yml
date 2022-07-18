@@ -17,8 +17,12 @@ after_success:
   # Log in to the docker cli/hub
   - docker login -u "$DOCKER_ID" -p "$DOCKER_PASSWORD" docker.io
   # Take these images and push to docker hub
-  - docker push fibonacci-client
-  - docker push fibonacci-server
-  - docker push fibonacci-nginx
-  - docker push fibonacci-worker
+  - docker tag fibonacci-client kunalv/fibonacci-client
+  - docker tag fibonacci-server kunalv/fibonacci-server
+  - docker tag fibonacci-nginx kunalv/fibonacci-nginx
+  - docker tag fibonacci-worker kunalv/fibonacci-worker
+  - docker push kunalv/fibonacci-client
+  - docker push kunalv/fibonacci-server
+  - docker push kunalv/fibonacci-nginx
+  - docker push kunalv/fibonacci-worker
 
